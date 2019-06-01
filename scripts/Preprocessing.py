@@ -1,4 +1,5 @@
 import pandas as pd
+from sklearn.preprocessing import MinMaxScaler
 
 class Preprocessing:
     """
@@ -20,6 +21,9 @@ class Preprocessing:
         assert(type(cols_to_filter) == list)
         self.cols_to_filter = cols_to_filter
 
+        # scaler to make numerical columns between 0 and 1
+        self.scaler = MinMaxScaler()
+
     def fit(self, X, y=None):
         """
         Finds out what which columns need to be converted to dummy
@@ -38,6 +42,15 @@ class Preprocessing:
                                           ]
                                    )
 
+        self.numerical_cols = pd.Index([x for x in X.columns
+                                            if x not in self.categorical_cols \
+                                                and x not in self.cols_to_filter
+                                          ]
+                                   )
+
+        # Fitting the scaler to the training data's numerical columns
+        self.scaler.fit(X[self.numerical_cols])
+
         return self
 
     def transform(self, X, y=None):
@@ -53,15 +66,13 @@ class Preprocessing:
 
         # Setting all values for columns not in the training data to 0
         # so no additional information can be learned
-        new_cat_cols = pd.Index([x for x in X.columns
-                                  if X[x].dtype == object])
-
-        new_cols = set(new_cat_cols) - set(self.categorical_cols)
+        new_cols = set(X.columns) - set(self.categorical_cols) - set(self.numerical_cols)
 
         for col in new_cols:
             X[col] = 0
 
         X_new = pd.get_dummies(X)
+        X_new[self.numerical_cols] = self.scaler.transform(X_new[self.numerical_cols])
 
         return X_new
 
