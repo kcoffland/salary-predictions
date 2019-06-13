@@ -117,27 +117,3 @@ def grad_types(df):
             return 4
         else:
             return 6
-
-def tech_mogul(df):
-    assert('jobType' in df.index and 'jobType column does not exist')
-    assert('industry' in df.index and 'industry column does not exist')
-
-    moguls = ['CEO', 'CTO', 'CFO']
-
-    if df['industry']== 'WEB' and df['jobType'] in moguls:
-        return 1
-    else:
-        return 0
-
-def oil_baron(df):
-    assert('jobType' in df.index and 'jobType column does not exist')
-    assert ('industry' in df.index and 'industry column does not exist')
-
-    barons = ['CEO', 'CTO', 'CFO']
-
-    if df['industry'] == 'OIL' and df['jobType'] in barons:
-        return 1
-    else:
-        return 0
-
-        
