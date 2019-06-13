@@ -10,7 +10,7 @@ class Preprocessing:
     """
 
     def __init__(self, cols_to_filter=None, ordinal_cols=None, binned_cols=None, inplace=False,
-                 grad_types=False, tech_mogul=False, oil_baron=False, oil_rig=False, combo=False):
+                 grad_types=False, combo=False):
         """
         Args:
             cols_to_filter: list of strings, names columns which need
@@ -29,6 +29,9 @@ class Preprocessing:
                             not work if they have not been binned.
             grad_types: bool, if True, then the grad_types feature will be created.
                             ONLY TO BE USED FOR SALARY-PREDICTIONS
+            combo: bool, if True then the combo feature will be created to combine distance
+                        from the city information with experience information
+                        ONLY TO BE USED FOR SALARY-PREDICTIONS
         """
 
         # stores whether the model processor has been fit to the data
@@ -39,9 +42,9 @@ class Preprocessing:
 
         self.cols_to_filter = cols_to_filter
 
-        self.categorical_cols = []
-        self.numerical_cols = []
-        self.dummy_cols = []
+        self.categorical_cols = pd.Index([])
+        self.numerical_cols = pd.Index([])
+        self.dummy_cols = pd.Index([])
 
         # Setting up ordinal columns encoding
         self.ordinal_cols = ordinal_cols
@@ -65,9 +68,6 @@ class Preprocessing:
 
         # Adding optional features
         self.grad_types = grad_types
-        self.tech_mogul = tech_mogul
-        self.oil_baron = oil_baron
-        self.oil_rig = oil_rig
         self.combo = combo
 
 
@@ -169,10 +169,6 @@ class Preprocessing:
             X_new['gradTypes'] = X_new.apply(grad_types, axis=1)
             # Scaling it here because it won't be in the numerical_cols
             X_new['gradTypes'] /= X_new['gradTypes'].max()
-        if self.tech_mogul:
-            X_new['techMogul'] = X_new.apply(tech_mogul, axis=1)
-        if self.oil_baron:
-            X_new['oilBaron'] = X_new.apply(oil_baron, axis=1)
 
         # Removing columns that the user wants to filter
         if self.cols_to_filter:
