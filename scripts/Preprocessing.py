@@ -1,6 +1,6 @@
 import pandas as pd
 from sklearn.preprocessing import MinMaxScaler, OrdinalEncoder
-from helpers import attended_college, grad_types, tech_mogul, oil_baron
+from helpers import attended_college, grad_types
 
 class Preprocessing:
     """
