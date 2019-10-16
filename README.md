@@ -12,3 +12,6 @@ going forward, both on this project as well as projects in the future.
 Found in the [scripts](scripts/) folder are the files used to help me throughout the project. NaiveModel.py provides the 
 baseline model. Preprocessing.py holds the preprocessing object used in developing the pipeline. helpers.py has all the 
 functions that were utilized throughout the notebooks and model building.
+
+If the jupyter notebooks fail to load, there are markdown backups of every file in the [backups](backups/) folder. These should
+work whether or not GitHub can currently handle Jupyter NoteBooks.
